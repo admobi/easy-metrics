@@ -1,5 +1,5 @@
 # Easy-metrics
-A Go library that provides easy to use, stand by metrics and exposes it via HTTP.
+A Go library that provides easy to use, stand alone metrics and exposes it via HTTP.
 It can create snapshots each defined duration and store in a pool.
 That useful for fast monitoring of current performance and other application indicators without necessity of export into external applications.
 
