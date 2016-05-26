@@ -1,4 +1,4 @@
-package metric_test
+package easy-metrics_test
 
 import (
 	"github.com/adbluehub/DSP/backend/metric"

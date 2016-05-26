@@ -1,4 +1,4 @@
-package metric
+package easy-metrics
 
 import (
 	"math"
