@@ -1,4 +1,4 @@
-package easy-metrics
+package metrics
 
 import (
 	"strconv"
