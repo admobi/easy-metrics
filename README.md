@@ -1,4 +1,4 @@
-# Easy-metrics [![GoDoc] (https://godoc.org/github.com/admobi/easy-metrics?status.svg)](https://godoc.org/github.com/admobi/easy-metrics) [![Go Report Card](https://goreportcard.com/badge/github.com/admobi/easy-metrics)](https://goreportcard.com/report/github.com/admobi/easy-metrics)
+# Easy-metrics [![GoDoc] (https://godoc.org/github.com/admobi/easy-metrics?status.svg)](https://godoc.org/github.com/admobi/easy-metrics) [![Go Report Card](https://goreportcard.com/badge/github.com/admobi/easy-metrics)](https://goreportcard.com/report/github.com/admobi/easy-metrics) [![Build Status](https://travis-ci.org/admobi/easy-metrics.svg?branch=master)](https://travis-ci.org/admobi/easy-metrics)
 A Go library that provides easy to use, stand alone metrics and exposes it via HTTP.
 It can create snapshots each defined duration and store in a pool.
 That useful for fast monitoring of current performance and other application indicators without necessity of export into external applications.
@@ -10,12 +10,12 @@ So you don't need to collect it in some external applications like statsd, graph
 # Installation
 Just go get:
 ```
-go get github.com/adbluehub/easy-metrics
+go get github.com/admobi/easy-metrics
 ```
 
 Or to update:
 ``` 
-go get -u github.com/adbluehub/easy-metrics
+go get -u github.com/admobi/easy-metrics
 ```
 
 # Usage
@@ -25,7 +25,7 @@ and *registry* which stores pool of metrics
 Add import to project:
 ```go
 import (
-	metrics "github.com/adbluehub/easy-metrics"
+	"github.com/admobi/easy-metrics"
 )
 ```
 
@@ -36,7 +36,7 @@ c := mertics.NewCounter("requests")
 // Create registry
 r := metrics.NewRegistry("Statistics")
 // Register metric
-r.AddMetric(c)
+r.AddMetrics(c)
 
 // Change metric. Increase by 1 
 c.Inc()
@@ -52,7 +52,7 @@ g := mertics.NewGauge("rates")
 // Create registry
 r, err := metrics.NewRegistry("Statistics")
 // Register metric
-r.AddMetric(c, g)
+r.AddMetrics(c, g)
 ```
 
-All operations are thred safe
+All operations are thread safe

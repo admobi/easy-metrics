@@ -8,7 +8,7 @@ import (
 
 // Registry is an abstract type for metric countainer
 type Registry interface {
-	AddMetric(metrics ...Metric) error
+	AddMetrics(metrics ...Metric) error
 	dump() string
 	GetMetricByName(name string) (Metric, error)
 	GetMetrics() map[string]Metric
@@ -76,8 +76,8 @@ func NewRegistry(name string) (Registry, error) {
 	return registryMap.r[name], nil
 }
 
-// AddMetric adds metric into registry
-func (r *DefaultRegistry) AddMetric(metrics ...Metric) error {
+// AddMetrics adds one or more metrics into registry
+func (r *DefaultRegistry) AddMetrics(metrics ...Metric) error {
 	r.Lock()
 	defer r.Unlock()
 	for _, m := range metrics {

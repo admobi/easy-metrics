@@ -53,12 +53,12 @@ func TestNewTrackRegistry(t *testing.T) {
 func TestRegisterMetric(t *testing.T) {
 	rg, _ := metrics.NewTrackRegistry("newcounter", 10, time.Second*100, false)
 	m1 := metrics.NewCounter("name1")
-	err := rg.AddMetric(m1)
+	err := rg.AddMetrics(m1)
 	if err != nil {
 		t.Errorf("unable to register metric, %v", err)
 	}
 	m2 := metrics.NewCounter("name1")
-	err = rg.AddMetric(m2)
+	err = rg.AddMetrics(m2)
 	if err == nil {
 		t.Error("existing metric name, should be error on register but got nil")
 	}
@@ -73,9 +73,9 @@ func TestRegisterMetric(t *testing.T) {
 func TestDefaultCounter(t *testing.T) {
 	rg, _ := metrics.NewTrackRegistry("testcounters", 10, time.Second*100, false)
 	m1 := metrics.NewCounter("Total connections")
-	rg.AddMetric(m1)
+	rg.AddMetrics(m1)
 	m2 := metrics.NewCounter("Total connections 2")
-	rg.AddMetric(m2)
+	rg.AddMetrics(m2)
 
 	for i := 0; i < 100; i++ {
 		m1.Inc()
@@ -92,7 +92,7 @@ func TestDefaultCounter(t *testing.T) {
 func TestTrackRegistry(t *testing.T) {
 	rg, _ := metrics.NewTrackRegistry("testTrackRegistry", 10, time.Second, false)
 	m1 := metrics.NewCounter("test swap metric")
-	rg.AddMetric(m1)
+	rg.AddMetrics(m1)
 
 	for i := 0; i < 100; i++ {
 		m1.Inc()
@@ -108,9 +108,9 @@ func TestTrackRegistry(t *testing.T) {
 func TestDumpRegistry(t *testing.T) {
 	rg, _ := metrics.NewTrackRegistry("dump", 10, time.Millisecond*100, true)
 	m1 := metrics.NewCounter("dump")
-	rg.AddMetric(m1)
+	rg.AddMetrics(m1)
 	m2 := metrics.NewCounter("dump2")
-	rg.AddMetric(m2)
+	rg.AddMetrics(m2)
 
 	for i := 0; i < 1000; i++ {
 		m1.Inc()
@@ -134,7 +134,7 @@ func TestDumpRegistry(t *testing.T) {
 func TestNewRegistry(t *testing.T) {
 	rg, _ := metrics.NewRegistry("plain")
 	m1 := metrics.NewCounter("metric")
-	err := rg.AddMetric(m1)
+	err := rg.AddMetrics(m1)
 	if err != nil {
 		t.Errorf("unable to register metric, %v", err)
 	}
@@ -165,7 +165,7 @@ func TestGauge(t *testing.T) {
 	assertGauge(t, 0, g.Get())
 
 	reg, _ := metrics.NewTrackRegistry("gauge reg", 10, time.Millisecond, false)
-	err := reg.AddMetric(g)
+	err := reg.AddMetrics(g)
 
 	time.Sleep(time.Millisecond * 5)
 	if err != nil {
