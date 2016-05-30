@@ -105,30 +105,8 @@ func TestTrackRegistry(t *testing.T) {
 	assertCounter(t, 100, sw[0].GetMetric("test swap metric").Get())
 }
 
-func TestDumpRegistry(t *testing.T) {
-	rg, _ := metrics.NewTrackRegistry("dump", 10, time.Millisecond*100, true)
-	m1 := metrics.NewCounter("dump")
-	rg.AddMetrics(m1)
-	m2 := metrics.NewCounter("dump2")
-	rg.AddMetrics(m2)
+func TestExpose(t *testing.T) {
 
-	for i := 0; i < 1000; i++ {
-		m1.Inc()
-		m2.Inc()
-	}
-
-	str, err := metrics.DumpRegistry("dump")
-	if err != nil {
-		t.Errorf("unable to dump registry, %v", err)
-	}
-	if len(str) <= 0 {
-		t.Errorf("no data in registry dump")
-	}
-
-	_, err = metrics.DumpRegistry("noexists")
-	if err == nil {
-		t.Error("have wrong registry name, should be error but got nil")
-	}
 }
 
 func TestNewRegistry(t *testing.T) {

@@ -1,7 +1,6 @@
 package metrics
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 	"sort"
@@ -34,16 +33,34 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		t.Execute(w, data)
 
 	} else {
-		// Shows the registry metrics
-		d, err := DumpRegistry(qv.Get("show"))
+		reg, err := GetRegistryByName(qv.Get("show"))
 		if err != nil {
-			fmt.Println(err)
+			switch err.(type) {
+			case ErrEmptyRegistryName:
+				http.Error(w, err.Error(), http.StatusNotAcceptable)
+			case ErrRegistryUnknown:
+				http.Error(w, err.Error(), http.StatusNotFound)
+			default:
+				http.Error(w, "Error", http.StatusInternalServerError)
+			}
+			return
 		}
 
-		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		w.Write([]byte(d))
+		t, _ := template.New("registries").Parse(metricsTpl)
+		data := struct {
+			Title string
+			Items map[string]string
+		}{
+			Title: qv.Get("show") + "metrics",
+			Items: make(map[string]string, len(reg.GetMetrics())),
+		}
 
-		// w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		for name, m := range reg.GetMetrics() {
+			data.Items[name] = m.String()
+		}
+
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		t.Execute(w, data)
 	}
 }
 
@@ -57,5 +74,21 @@ const listTpl = `
 	</head>
 	<body>
 		{{range .Items}}<div><a href="/metrics?show={{ . }}">{{ . }}</a></div>{{else}}<div><strong>no registries</strong></div>{{end}}
+	</body>
+</html>`
+
+const metricsTpl = `
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>{{.Title}}</title>
+	</head>
+	<body>
+		{{range $key, $val := .Items}}
+			<div>{{ $key }}: {{ $val }}</div>
+		{{else}}
+			<div><strong>no metrics found</strong></div>
+		{{end}}
 	</body>
 </html>`

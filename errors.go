@@ -1,14 +1,18 @@
 package metrics
 
-import "errors"
+// ErrEmptyMetricName error type on empty metric name
+type ErrEmptyMetricName struct{}
 
-var (
-	// ErrEmptyMetricName error on empty metric name
-	ErrEmptyMetricName = errors.New("metric name is empty")
+func (e ErrEmptyMetricName) Error() string {
+	return "metric name is empty"
+}
 
-	// ErrEmptyRegistryName error on empty registry name
-	ErrEmptyRegistryName = errors.New("registry name is empty")
-)
+// ErrEmptyRegistryName error type on empty registry name
+type ErrEmptyRegistryName struct{}
+
+func (e ErrEmptyRegistryName) Error() string {
+	return "registry name is empty"
+}
 
 // ErrRegistryUnknown error type on provided registry name is unknown
 type ErrRegistryUnknown string
