@@ -3,3 +3,8 @@ language: go
 go:
   - 1.6.2
   - tip
+
+script:
+  - diff -u <(echo -n) <(gofmt -d -s .)
+  - go tool vet .
+  - go test -v -race .
