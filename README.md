@@ -1,11 +1,11 @@
 # Easy-metrics [![GoDoc] (https://godoc.org/github.com/admobi/easy-metrics?status.svg)](https://godoc.org/github.com/admobi/easy-metrics) [![Go Report Card](https://goreportcard.com/badge/github.com/admobi/easy-metrics)](https://goreportcard.com/report/github.com/admobi/easy-metrics) [![Build Status](https://travis-ci.org/admobi/easy-metrics.svg?branch=master)](https://travis-ci.org/admobi/easy-metrics)
 A Go library that provides easy to use, stand alone metrics and exposes it via HTTP.
-It can create snapshots each defined duration and store in a pool.
-That useful for fast monitoring of current performance and other application indicators without necessity of export into external applications.
+It provides metrics snapshots on defined interval and stores it in a pool.
+That can be used to track performance and other application indicators without necessity of export into external applications.
 
 # Features
-Metrics can be stored in a `TrackRegistry` that will make snapshots over defined time and store it in pool. Shapshots like other metrics available via HTTP.
-So you don't need to collect it in some external applications like statsd, graphana, elk etc.
+Metrics can be stored in a `TrackRegistry` that provides snapshots over defined interval and stores it in a pool. Snapshots like other metrics available via HTTP.
+So you don't need to collect metrics in some external applications like statsd, graphana, elk etc.
 
 # Installation
 Just go get:
