@@ -19,14 +19,12 @@ go get -u github.com/admobi/easy-metrics
 ```
 
 # Usage
-At the core of metrics the two main subject, *metric* which stores a single numerical value
+At the core of metrics is two subjects, *metric* which stores a single numerical value
 and *registry* which stores pool of metrics
 
 Add import to project:
 ```go
-import (
-	"github.com/admobi/easy-metrics"
-)
+import "github.com/admobi/easy-metrics"
 ```
 
 Create and update metrics:
@@ -54,5 +52,14 @@ r, err := metrics.NewRegistry("Statistics")
 // Register metric
 r.AddMetrics(c, g)
 ```
+
+## Snapshots
+```go
+r := metrics.NewTrackRegistry("Stat", 30, time.Second, false)
+c := mertics.NewCounter("requests")
+r.AddMetrics(c)
+```
+
+TrackRegistry will take metric snapshot every second and stores 30 last results
 
 All operations are thread safe
