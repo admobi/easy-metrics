@@ -102,7 +102,8 @@ func TestTrackRegistry(t *testing.T) {
 	assertCounter(t, 0, m1.Get())
 
 	sw := rg.GetSnapshots()
-	assertCounter(t, 100, sw[0].GetMetric("test swap metric").Get())
+	metric, _ := sw[0].GetMetricByName("test swap metric")
+	assertCounter(t, 100, metric.Get())
 }
 
 func TestExpose(t *testing.T) {
