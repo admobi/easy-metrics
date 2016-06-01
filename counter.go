@@ -6,18 +6,18 @@ import (
 )
 
 // Counter is a cumulative metric that represents a single numerical value that only ever goes up.
-// Satsfies Metric interface
+// Satsfies Metric interface.
 type Counter struct {
 	name  string
 	value uint64
 }
 
-// NewCounter returns new counter that satsfies Metric interface
+// NewCounter returns new counter that satsfies Metric interface.
 func NewCounter(name string) *Counter {
 	return &Counter{name: name}
 }
 
-// Get returns counter value
+// Get returns counter value.
 func (c *Counter) Get() interface{} {
 	return atomic.LoadUint64(&c.value)
 }

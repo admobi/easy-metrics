@@ -13,12 +13,12 @@ type Gauge struct {
 	value uint64
 }
 
-// NewGauge returns new gauge metric that satsfies Metric interface
+// NewGauge returns new gauge metric that satsfies Metric interface.
 func NewGauge(name string) *Gauge {
 	return &Gauge{name: name}
 }
 
-// Get returns gauge value
+// Get returns gauge value.
 func (g *Gauge) Get() interface{} {
 	return math.Float64frombits(atomic.LoadUint64(&g.value))
 }
