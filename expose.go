@@ -8,11 +8,11 @@ import (
 )
 
 func init() {
-	http.Handle("/easy-metrics", http.HandlerFunc(Index))
+	http.Handle("/easy-metrics", http.HandlerFunc(exposeMetrics))
 }
 
 // Index shows all registries via http
-func Index(w http.ResponseWriter, r *http.Request) {
+func exposeMetrics(w http.ResponseWriter, r *http.Request) {
 	qv := r.URL.Query()
 	if _, ok := qv["show"]; !ok {
 		// Shows main page with registries list
