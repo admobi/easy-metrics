@@ -48,15 +48,40 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 		t, _ := template.New("registries").Parse(metricsTpl)
 		data := struct {
-			Title string
-			Items map[string]string
+			Title     string
+			RegName   string
+			Items     map[string]string
+			Snapshots []struct {
+				Ts string
+				M  map[string]string
+			}
 		}{
-			Title: qv.Get("show") + "metrics",
-			Items: make(map[string]string, len(reg.GetMetrics())),
+			Title:   qv.Get("show") + " :: metrics",
+			RegName: qv.Get("show"),
+			Items:   make(map[string]string, len(reg.GetMetrics())),
 		}
 
 		for name, m := range reg.GetMetrics() {
 			data.Items[name] = m.String()
+		}
+
+		switch reg.(type) {
+		case Tracker:
+			for _, snapshot := range reg.(Tracker).GetSnapshots() {
+				ms := snapshot.GetMetrics()
+				msData := make(map[string]string, len(ms))
+				for name, metric := range ms {
+					msData[name] = metric.String()
+				}
+				data.Snapshots = append(data.Snapshots, struct {
+					Ts string
+					M  map[string]string
+				}{
+					Ts: snapshot.GetTimestamp().Format("2006-01-02 15:04:05"),
+					M:  msData,
+				})
+			}
+		default:
 		}
 
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
@@ -85,10 +110,26 @@ const metricsTpl = `
 		<title>{{.Title}}</title>
 	</head>
 	<body>
+		<h4>{{.RegName}}</h4>
+		<h6>Current</h6>
 		{{range $key, $val := .Items}}
 			<div>{{ $key }}: {{ $val }}</div>
 		{{else}}
 			<div><strong>no metrics found</strong></div>
 		{{end}}
+		
+		{{if .Snapshots}}
+			<h6>Snapshots</h6>
+		{{end}}
+		{{range $key, $val := .Snapshots}}
+			<div>[{{$val.Ts}}]</div>
+			<div>
+				{{range $k, $v := $val.M}}
+					
+					<div>{{ $k }}: {{ $v }}</div>
+				{{end}}
+			</div>
+		{{end}}
+		
 	</body>
 </html>`

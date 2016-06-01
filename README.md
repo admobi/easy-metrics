@@ -20,7 +20,7 @@ go get -u github.com/admobi/easy-metrics
 
 # Usage
 At the core of metrics is two subjects, *metric* which stores a single numerical value
-and *registry* which stores pool of metrics
+and *registry* which stores pool of metrics.
 
 Add import to project:
 ```go
@@ -60,6 +60,6 @@ c := mertics.NewCounter("requests")
 r.AddMetrics(c)
 ```
 
-TrackRegistry will take metric snapshot every second and stores 30 last results
+TrackRegistry will take metric snapshots every second and stores 30 last results.
 
 All operations are thread safe

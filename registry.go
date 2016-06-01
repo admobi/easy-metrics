@@ -146,9 +146,17 @@ func (am *Snapshot) GetTimestamp() time.Time {
 	return am.t
 }
 
-// GetMetric returns Metric by name
-func (am *Snapshot) GetMetric(name string) Metric {
-	return am.data[name]
+// GetMetricByName returns Metric by given name
+func (am *Snapshot) GetMetricByName(name string) (Metric, error) {
+	if _, ok := am.data[name]; !ok {
+		return nil, ErrMetricUnknown(name)
+	}
+	return am.data[name], nil
+}
+
+// GetMetrics returns all metrics from snapshot
+func (am *Snapshot) GetMetrics() map[string]Metric {
+	return am.data
 }
 
 // NewTrackRegistry creates a new TrackRegistry and adds it into the registry map.
