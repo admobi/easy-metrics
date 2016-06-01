@@ -122,7 +122,7 @@ const listTpl = `
 	<body style="font-family:Arial,Helvetica,sans-serif;font-size:16px;">
 	<div style="font-size:20px; padding: 10px">Registries:</div>
 	<ul>
-		{{range .Items}}<li><a href="/metrics?show={{ . }}">{{ . }}</a></li>{{else}}<li><strong>no registries</strong></li>{{end}}
+		{{range .Items}}<li><a href="/easy-metrics?show={{ . }}">{{ . }}</a></li>{{else}}<li><strong>no registries</strong></li>{{end}}
 		</ul>
 	</body>
 </html>`
