@@ -216,8 +216,9 @@ func NewTrackRegistry(name string, capacity int, interval time.Duration, align b
 // GetSnapshots returns slice of swaped metrics
 func (r *TrackRegistry) GetSnapshots() []Snapshot {
 	r.Lock()
-	defer r.Unlock()
-	return r.buf
+	sn := append([]Snapshot{}, r.buf...)
+	r.Unlock()
+	return sn
 }
 
 // Timer for metrics swapping
@@ -235,12 +236,14 @@ func (r *TrackRegistry) startTimer() {
 func (r *TrackRegistry) makeSnapshot() {
 	r.Lock()
 	defer r.Unlock()
+
+	r.shiftSlice()
+
 	if len(r.buf) == 0 || len(r.buf) < cap(r.buf) {
 		swmetric := Snapshot{}
 		swmetric.data = make(map[string]Metric)
 		r.buf = append(r.buf, swmetric)
 	}
-	shiftSlice(r.buf, r.duration)
 	r.buf[0].data = copyMetrics(r.metrics)
 	r.buf[0].t = time.Now().UTC()
 
@@ -249,10 +252,11 @@ func (r *TrackRegistry) makeSnapshot() {
 	}
 }
 
-func shiftSlice(buf []Snapshot, step time.Duration) {
-	for i := len(buf) - 1; i > 0; i-- {
-		buf[i] = buf[i-1]
-		buf[i-1].t = buf[i-1].t.Add(-step)
+// Shift snapshots slice by 1 and pops oldest snapshot
+func (r *TrackRegistry) shiftSlice() {
+	for i := len(r.buf) - 1; i > 0; i-- {
+		r.buf[i] = r.buf[i-1]
+		r.buf[i-1].t = r.buf[i-1].t.Add(-r.duration)
 	}
 }
 

@@ -77,7 +77,8 @@ func exposeMetrics(w http.ResponseWriter, r *http.Request) {
 		switch reg.(type) {
 		case Tracker:
 			charts := Charts{}
-			for _, snapshot := range reg.(Tracker).GetSnapshots() {
+			shs := reg.(Tracker).GetSnapshots()
+			for _, snapshot := range shs {
 				ms := snapshot.GetMetrics()
 				msData := make(map[string]string, len(ms))
 				idx := 1

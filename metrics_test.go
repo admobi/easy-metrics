@@ -102,7 +102,10 @@ func TestTrackRegistry(t *testing.T) {
 	assertCounter(t, 0, m1.Get())
 
 	sw := rg.GetSnapshots()
-	metric, _ := sw[0].GetMetricByName("test swap metric")
+	metric, err := sw[0].GetMetricByName("test swap metric")
+	if err != nil {
+		t.Errorf("error on getting metric: %v", err)
+	}
 	assertCounter(t, 100, metric.Get())
 }
 
