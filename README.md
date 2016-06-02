@@ -53,6 +53,8 @@ r, err := metrics.NewRegistry("Statistics")
 r.AddMetrics(c, g)
 ```
 
+All operations are thread safe.
+
 ## Snapshots
 ```go
 r := metrics.NewTrackRegistry("Stat", 30, time.Second, false)
@@ -60,6 +62,25 @@ c := mertics.NewCounter("requests")
 r.AddMetrics(c)
 ```
 
-TrackRegistry will take metric snapshots every second and stores 30 last results.
+TrackRegistry will take metric snapshots every second and stores last 30 results.
+For largest interval you may align timer by setting `align` to `true` . For example:
+```go
+r := metrics.NewTrackRegistry("Stat", 30, time.Hour, true)
+```
+If application starts at 11:15, snapshots will be created at 12:00, 13:00 etc. (not 12:15, 13:15)
 
-All operations are thread safe
+## Monitoring
+Add 
+```go
+go func() {
+		log.Println(http.ListenAndServe(":9911", nil))
+}()
+```
+
+And then go to `http://localhost:9911/easy-metrics`. You'll see the list of registries. Chose one you should see something like that:
+
+# Contribution
+Contributions are welcome. Fell free to create issue or better PR)
+
+# License
+MIT License

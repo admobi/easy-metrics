@@ -160,18 +160,18 @@ func (am *Snapshot) GetMetrics() map[string]Metric {
 }
 
 // NewTrackRegistry creates a new TrackRegistry and adds it into the registry map.
-// It makes the snapshots of  metric on each interval and keeps it in pool with specified capacity.
+// It makes the snapshots of metric on each interval and keeps it in pool with specified capacity.
 // If align is set to true, metric's archiving will be align by interval duration.
 // For examaple:
 //
 //
 //      // If application will be started at 12:10:13
 //
-//      // this registry will swap metrics at 12:11:13, 12:12:13, 12:12:13 etc.
-//      r, _ := NewTrackRegistry("stat per minute", 10, time.Minute, false)
+//      // this registry will create snaphosts at 13:10:13, 14:10:13, 15:10:13 etc.
+//      NewTrackRegistry("stat per minute", 10, time.Hour, false)
 //
-//      // but this will swap metrics at 12:11:00, 12:12:00, 12:12:00 etc.
-//      r, _ := NewTrackRegistry("stat per minute", 10, time.Minute, true)
+//      // but this will create snaphosts at 13:00:00, 14:00:00, 15:00:00 etc.
+//      NewTrackRegistry("stat per minute", 10, time.Hour, true)
 //
 //
 func NewTrackRegistry(name string, capacity int, interval time.Duration, align bool) (Tracker, error) {

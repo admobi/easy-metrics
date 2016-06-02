@@ -56,10 +56,12 @@ func (g *Gauge) Name() string {
 	return g.name
 }
 
+// Returns copy of gauge. It needs for snapshots.
 func (g *Gauge) copy() Metric {
 	return &Gauge{value: atomic.LoadUint64(&g.value), name: g.name}
 }
 
+// Flush gauge value. It needs for snapshots.
 func (g *Gauge) flush() {
 	atomic.StoreUint64(&g.value, 0)
 }

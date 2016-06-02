@@ -11,7 +11,7 @@ func init() {
 	http.Handle("/easy-metrics", http.HandlerFunc(exposeMetrics))
 }
 
-// Index shows all registries via http
+// exposeMetrics shows all registries via http
 func exposeMetrics(w http.ResponseWriter, r *http.Request) {
 	qv := r.URL.Query()
 	if _, ok := qv["show"]; !ok {

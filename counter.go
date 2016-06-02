@@ -42,10 +42,12 @@ func (c *Counter) Name() string {
 	return c.name
 }
 
+// Returns copy of counter. It needs for snapshots.
 func (c *Counter) copy() Metric {
 	return &Counter{value: atomic.LoadUint64(&c.value), name: c.name}
 }
 
+// Flush counter value. It needs for snapshots.
 func (c *Counter) flush() {
 	atomic.StoreUint64(&c.value, 0)
 }
