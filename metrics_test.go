@@ -143,17 +143,40 @@ func TestGauge(t *testing.T) {
 	g.Set(0)
 	assertGauge(t, 0, g.Get())
 
-	reg, _ := metrics.NewTrackRegistry("gauge reg", 10, time.Millisecond, false)
+	reg, _ := metrics.NewTrackRegistry("gauge reg", 10, time.Second*5, true)
 	err := reg.AddMetrics(g)
 
-	time.Sleep(time.Millisecond * 5)
 	if err != nil {
 		t.Errorf("unbale to add gague into registry %v", err)
 	}
 }
 
 func TestSnapshots(t *testing.T) {
-	//	t.Error("Should be implemented")
+	r, err := metrics.NewTrackRegistry("Test snaphots", 10, time.Second*5, false)
+	tshould := time.Now().UTC().Add(time.Second * 5)
+	if err != nil {
+		t.Errorf("error on registry creation: %s", err)
+	}
+	g := metrics.NewGauge("testggauge")
+
+	r.AddMetrics(g)
+
+	for i := 0; i < 6; i++ {
+		g.Add(10)
+		time.Sleep(time.Second)
+	}
+
+	for _, s := range r.GetSnapshots() {
+		m, err := s.GetMetricByName("testggauge")
+		if err != nil {
+			t.Errorf("unable to get metric from snapshot: %s", err)
+		}
+		assertGauge(t, 60, m.Get().(float64)+g.Get().(float64))
+
+		if tshould.Round(time.Second) != s.GetTimestamp().Round(time.Second) {
+			t.Errorf("snapshot time mismatch, expected %s, but got %s", tshould.Format("15:04:05"), s.GetTimestamp().Format("15:04:05"))
+		}
+	}
 }
 
 func assertGauge(t *testing.T, expected float64, actual interface{}) {
