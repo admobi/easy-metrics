@@ -29,28 +29,21 @@ import "github.com/admobi/easy-metrics"
 
 Create and update metrics:
 ```go
-// Create metric
-c := mertics.NewCounter("requests")
-// Create registry
-r := metrics.NewRegistry("Statistics")
-// Register metric
-r.AddMetrics(c)
-
-// Change metric. Increase by 1 
-c.Inc()
-// or same
-c.Add(1)
-```
-
-You can add several metrics into registry:
-```go
-// Create metric
+// Create metrics
 c := mertics.NewCounter("requests")
 g := mertics.NewGauge("rates")
 // Create registry
 r, err := metrics.NewRegistry("Statistics")
-// Register metric
+// Register metrics
 r.AddMetrics(c, g)
+
+// Change metric. Increase by 1 
+c.Inc()
+// or the same
+c.Add(1)
+
+// Add delta to gauge
+g.Add(3.14)
 ```
 
 All operations are thread safe.
@@ -62,7 +55,7 @@ c := mertics.NewCounter("requests")
 r.AddMetrics(c)
 ```
 
-TrackRegistry will take metric snapshots every second and stores last 30 results.
+In this case TrackRegistry will take metric snapshots every second and stores last 30 results.
 For largest interval you may align timer by setting `align` to `true` . For example:
 ```go
 r := metrics.NewTrackRegistry("Stat", 30, time.Hour, true)
@@ -77,11 +70,11 @@ go func() {
 }()
 ```
 
-And then go to `http://localhost:9911/easy-metrics`. You'll see the list of registries. Chose one you should see something like that:
+And then go to `http://localhost:9911/easy-metrics`. You'll see the list of registries. Chose one and you should see something like that:
 <img src="demo/democharts.png" />
 
 # Contribution
-Contributions are welcome. Fell free to create issue or better PR)
+Contributions are welcome. Feel free to create issue or better PR :)
 
 # License
 MIT License
