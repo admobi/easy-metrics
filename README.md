@@ -72,6 +72,7 @@ go func() {
 
 And then go to `http://localhost:9911/easy-metrics`. You'll see the list of registries. Chose one and you should see something like that:
 <img src="demo/democharts.png" />
+It uses [Plotly](https://github.com/plotly/plotly.js) library for charts.
 
 # Contribution
 Contributions are welcome. Feel free to create issue or better PR :)
