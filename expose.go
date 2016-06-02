@@ -134,7 +134,7 @@ const metricsTpl = `
 		<meta charset="UTF-8">
 		<title>{{.Title}}</title>
 		{{if .Snapshots}}
-		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+		<script src="https://cdn.plot.ly/plotly-1.12.0.min.js"></script>
 		{{end}}
 	</head>
 	<body style="font-family:Arial,Helvetica,sans-serif;font-size:14px;margin:0;padding:0">
