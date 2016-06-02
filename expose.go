@@ -187,7 +187,5 @@ const metricsTpl = `
 				Plotly.newPlot('chartsDiv', data);
 			</script>
 		{{end}}
-	
 	</body>
-
 </html>`

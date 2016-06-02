@@ -106,10 +106,6 @@ func TestTrackRegistry(t *testing.T) {
 	assertCounter(t, 100, metric.Get())
 }
 
-func TestExpose(t *testing.T) {
-
-}
-
 func TestNewRegistry(t *testing.T) {
 	rg, _ := metrics.NewRegistry("plain")
 	m1 := metrics.NewCounter("metric")
