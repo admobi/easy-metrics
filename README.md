@@ -78,6 +78,7 @@ go func() {
 ```
 
 And then go to `http://localhost:9911/easy-metrics`. You'll see the list of registries. Chose one you should see something like that:
+<img src="demo/democharts.png" />
 
 # Contribution
 Contributions are welcome. Fell free to create issue or better PR)
