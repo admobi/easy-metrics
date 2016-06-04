@@ -1,5 +1,5 @@
 # Easy-metrics [![GoDoc] (https://godoc.org/github.com/admobi/easy-metrics?status.svg)](https://godoc.org/github.com/admobi/easy-metrics) [![Go Report Card](https://goreportcard.com/badge/github.com/admobi/easy-metrics)](https://goreportcard.com/report/github.com/admobi/easy-metrics) [![Build Status](https://travis-ci.org/admobi/easy-metrics.svg?branch=master)](https://travis-ci.org/admobi/easy-metrics) [![Coverage Status](https://coveralls.io/repos/github/admobi/easy-metrics/badge.svg?branch=master)](https://coveralls.io/github/admobi/easy-metrics?branch=master)
-A Go library that provides easy to use, stand alone metrics and exposes it via HTTP.
+A Go library that provides easy to use, standalone metrics and exposes it via HTTP.
 It provides metrics snapshots on defined interval and stores it in a pool.
 That can be used to track performance and other application indicators without necessity of export into external applications.
 
