@@ -35,7 +35,7 @@ func (e ErrMetricUnknown) Error() string {
 	return "undefined metric name " + string(e)
 }
 
-// ErrMetricExists error type - metric with provided is exists.
+// ErrMetricExists error type - metric with provided name exists.
 type ErrMetricExists string
 
 func (e ErrMetricExists) Error() string {
