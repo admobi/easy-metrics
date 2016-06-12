@@ -81,11 +81,13 @@ func exposeMetrics(w http.ResponseWriter, r *http.Request) {
 			for _, snapshot := range shs {
 				ms := snapshot.GetMetrics()
 				msData := make(map[string]string, len(ms))
+				data.ChartNames = []template.JS{}
 				idx := 1
 				for name, metric := range ms {
 					msData[name] = metric.String()
 					ch := ChData{}
 					ch.Index = template.JS(fmt.Sprintf("trace%d", idx))
+					data.ChartNames = append(data.ChartNames, ch.Index)
 					ch.X = append(charts[template.JS(name)].X, snapshot.GetTimestamp().Format("2006-01-02 15:04:05"))
 					ch.Y = append(charts[template.JS(name)].Y, template.JS(metric.String()))
 					charts[template.JS(name)] = ch
@@ -101,9 +103,9 @@ func exposeMetrics(w http.ResponseWriter, r *http.Request) {
 			}
 			data.Charts = charts
 
-			for _, cc := range charts {
-				data.ChartNames = append(data.ChartNames, cc.Index)
-			}
+			// for _, cc := range charts {
+			// 	data.ChartNames = append(data.ChartNames, cc.Index)
+			// }
 
 		default:
 		}
