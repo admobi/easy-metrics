@@ -15,7 +15,7 @@ func init() {
 func exposeMetrics(w http.ResponseWriter, r *http.Request) {
 	qv := r.URL.Query()
 	if _, ok := qv["show"]; !ok {
-		// Shows main page with registries list
+		// Shows the main page with registries list
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
 		t, _ := template.New("registries").Parse(listTpl)
@@ -46,6 +46,8 @@ func exposeMetrics(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 		}
+
+		// FIXME: code for charts output is ugly and needs for refactoring
 		type ChData struct {
 			Index template.JS
 			X     []string
@@ -53,12 +55,12 @@ func exposeMetrics(w http.ResponseWriter, r *http.Request) {
 		}
 		type Charts map[template.JS]ChData
 		data := struct {
-			Title      string
-			RegName    string
-			Items      map[string]string
-			Charts     Charts
-			ChartNames []template.JS
-			Snapshots  []struct {
+			Title     string
+			RegName   string
+			Items     map[string]string
+			Charts    Charts
+			Cmt       template.JS
+			Snapshots []struct {
 				Ts string
 				M  map[string]string
 			}
@@ -66,6 +68,8 @@ func exposeMetrics(w http.ResponseWriter, r *http.Request) {
 			Title:   qv.Get("show") + " :: metrics",
 			RegName: qv.Get("show"),
 			Items:   make(map[string]string, len(reg.GetMetrics())),
+			// Need for silly trick with charts 'data' in template
+			Cmt: "//",
 		}
 
 		t, _ := template.New("registries").Parse(metricsTpl)
@@ -79,15 +83,13 @@ func exposeMetrics(w http.ResponseWriter, r *http.Request) {
 			charts := Charts{}
 			shs := reg.(Tracker).GetSnapshots()
 			for _, snapshot := range shs {
-				ms := snapshot.GetMetrics()
-				msData := make(map[string]string, len(ms))
-				data.ChartNames = []template.JS{}
+				// ms := snapshot.GetMetrics()
+				msData := make(map[string]string)
 				idx := 1
-				for name, metric := range ms {
+				for name, metric := range snapshot.GetMetrics() {
 					msData[name] = metric.String()
 					ch := ChData{}
 					ch.Index = template.JS(fmt.Sprintf("trace%d", idx))
-					data.ChartNames = append(data.ChartNames, ch.Index)
 					ch.X = append(charts[template.JS(name)].X, snapshot.GetTimestamp().Format("2006-01-02 15:04:05"))
 					ch.Y = append(charts[template.JS(name)].Y, template.JS(metric.String()))
 					charts[template.JS(name)] = ch
@@ -102,10 +104,6 @@ func exposeMetrics(w http.ResponseWriter, r *http.Request) {
 				})
 			}
 			data.Charts = charts
-
-			// for _, cc := range charts {
-			// 	data.ChartNames = append(data.ChartNames, cc.Index)
-			// }
 
 		default:
 		}
@@ -182,9 +180,8 @@ const metricsTpl = `
 					};
 				{{end}}
 				var data = [
-				//	trace1, trace2, trace3, trace4
-				{{range $index, $v := .ChartNames}}
-							{{if $index}},{{end}}{{$v}}
+					{{.Cmt}}	{{range $index, $v := .Charts}}{{if $index}},{{end}}
+					{{$v.Index}}
 				{{end}}
 				];
 				Plotly.newPlot('chartsDiv', data);
