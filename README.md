@@ -30,8 +30,8 @@ import "github.com/admobi/easy-metrics"
 Create and update metrics:
 ```go
 // Create metrics
-c := mertics.NewCounter("requests")
-g := mertics.NewGauge("rates")
+c := metrics.NewCounter("requests")
+g := metrics.NewGauge("rates")
 // Create registry
 r, err := metrics.NewRegistry("Statistics")
 // Register metrics
@@ -51,7 +51,7 @@ All operations are thread safe.
 ## Snapshots
 ```go
 r := metrics.NewTrackRegistry("Stat", 30, time.Second, false)
-c := mertics.NewCounter("requests")
+c := metrics.NewCounter("requests")
 r.AddMetrics(c)
 ```
 
